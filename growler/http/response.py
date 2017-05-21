@@ -15,6 +15,7 @@ from collections import OrderedDict
 from growler.http import HttpStatus
 from growler.utils.event_manager import Events
 from wsgiref.handlers import format_date_time as format_RFC_1123
+import collections
 
 
 class HTTPResponse:
@@ -89,7 +90,7 @@ class HTTPResponse:
         self.stream.write(msg)
 
     def write_eof(self):
-        print(">> ", self.stream)
+        print((">> ", self.stream))
         if self.stream.can_write_eof():
             self.stream.write_eof()
         else:
@@ -129,7 +130,7 @@ class HTTPResponse:
     def set(self, header, value=None):
         """Set header to the value"""
         if value is None:
-            for k, v in header.items():
+            for k, v in list(header.items()):
                 self.headers[k] = v
         else:
             self.headers[header] = value
@@ -161,7 +162,7 @@ class HTTPResponse:
     def links(self, links):
         """Sets the Link """
         s = ['<{}>; rel="{}"'.format(link, rel)
-             for link, rel in links.items()]
+             for link, rel in list(links.items())]
         self.headers['Link'] = ','.join(s)
 
     def json(self, body, status=200):
@@ -297,7 +298,7 @@ class Headers:
         self._header_data = OrderedDict()
         headers = dict(headers)
         headers.update(kw_headers)
-        for key, value in headers.items():
+        for key, value in list(headers.items()):
             self[key] = value
 
     def __getitem__(self, key):
@@ -341,7 +342,7 @@ class Headers:
             None
         """
         for next_dict in chain(args, (kwargs, )):
-            for k, v in next_dict.items():
+            for k, v in list(next_dict.items()):
                 self[k] = v
 
     def add_header(self, key, value, **params):
@@ -385,13 +386,13 @@ class Headers:
         def _str_value(value):
             if isinstance(value, (list, tuple)):
                 value = (self.EOL + '\t').join(map(_str_value, value))
-            elif callable(value):
+            elif isinstance(value, collections.Callable):
                 value = _str_value(value())
             return value
 
         s = self.EOL.join(("{key}: {value}".format(key=key,
                                                    value=_str_value(value))
-                           for key, value in self._header_data.values()
+                           for key, value in list(self._header_data.values())
                            if value is not None))
         return s + (self.EOL * 2)
 

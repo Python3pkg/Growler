@@ -10,6 +10,7 @@ import asyncio
 from unittest import mock
 
 from mocks import *
+import collections
 
 
 @pytest.fixture
@@ -106,6 +107,6 @@ def test_factory():
 
 def test_get_factory():
     factory = GrowlerProtocol.get_factory(None, None)
-    assert callable(factory)
+    assert isinstance(factory, collections.Callable)
     proto = factory()
     assert isinstance(proto, GrowlerProtocol)

@@ -37,9 +37,9 @@ class HTTPError(UrllibHttpError, metaclass=ItemizedMeta):
 
     def PrintSysMessage(self, printraceback=True):
         if self.sys_exception:
-            print(self.sys_exception)
+            print((self.sys_exception))
         if printraceback and self.traceback:
-            print(self.traceback)
+            print((self.traceback))
 
     @classmethod
     def get_from_code(cls, code):
@@ -66,7 +66,7 @@ class HTTPError(UrllibHttpError, metaclass=ItemizedMeta):
                 return err
         elif isinstance(key, str):
             # key by phrase
-            for error in cls.code_to_error.values():
+            for error in list(cls.code_to_error.values()):
                 if error.status.phrase == key:
                     return error
         raise HTTPErrorInvalidHttpError

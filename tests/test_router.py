@@ -13,6 +13,7 @@ from unittest import mock
 import pytest
 import re
 import types
+import collections
 
 
 GET = HTTPMethod.GET
@@ -251,7 +252,7 @@ def test_router_metaclass(router):
             """/xyz/ijk"""
             pass
 
-    assert callable(MyRouter._RouterMeta__growler_router)
+    assert isinstance(MyRouter._RouterMeta__growler_router, collections.Callable)
     sub_router = MyRouter()
     new_router = sub_router._RouterMeta__growler_router()
     assert len(new_router) is 2

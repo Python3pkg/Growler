@@ -17,6 +17,7 @@ for event-loop independent client handling.
 import asyncio
 import logging
 from growler.core.responder import ResponderHandler
+import collections
 
 log = logging.getLogger(__name__)
 
@@ -121,7 +122,7 @@ class GrowlerProtocol(asyncio.Protocol, ResponderHandler):
         self.responders = [self.make_responder(self)]
 
         try:
-            good_func = callable(self.responders[0].on_data)
+            good_func = isinstance(self.responders[0].on_data, collections.Callable)
         except AttributeError:
             good_func = False
 

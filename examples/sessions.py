@@ -24,7 +24,7 @@ def index(req, res):
     """
     number = req.session.get('counter', -1)
     req.session['counter'] = int(number) + 1
-    print(" -- Session '{id}' returned {counter} times".format(**req.session))
+    print((" -- Session '{id}' returned {counter} times".format(**req.session)))
     msg = "Hello!! You've been here [[%s]] times" % (req.session['counter'])
     res.send_text(msg)
     req.session.save()

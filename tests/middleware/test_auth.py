@@ -10,6 +10,7 @@ from mock_classes import (                                               # noqa
     mock_protocol,
     request_uri,
 )
+import collections
 
 
 @pytest.fixture
@@ -28,7 +29,7 @@ def test_docstring(auth):
 
 def test_call(auth):
     do_auth = auth()
-    assert callable(do_auth)
+    assert isinstance(do_auth, collections.Callable)
     with pytest.raises(NotImplementedError):
         do_auth(mock.Mock(), mock.Mock())
 
